@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "@reach/router";
-import { signInWithGoogle } from "../firebase";
+import { auth, generateUserDocument, signInWithGoogle } from "../firebase";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(null);
-  const createUserWithEmailAndPasswordHandler = (event, email, password) => {
+  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
     event.preventDefault();
+
+    try{
+      const {user} = await auth.createUserWithEmailAndPassword(email, password)
+      generateUserDocument(user, {displayName})
+    }
+    catch(error) {
+      setError("Error Signing up with Email and Password!")
+      console.log(error)
+    }
     setEmail("");
     setPassword("");
     setDisplayName("");
