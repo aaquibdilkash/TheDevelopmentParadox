@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "@reach/router";
 import { auth, generateUserDocument, signInWithGoogle } from "../firebase";
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(null);
+
   const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
     event.preventDefault();
 
@@ -23,6 +25,7 @@ const SignUp = () => {
   };
   const onChangeHandler = event => {
     const { name, value } = event.currentTarget;
+    
     if (name === "userEmail") {
       setEmail(value);
     } else if (name === "userPassword") {
