@@ -2,12 +2,19 @@ import logo from './logo.svg';
 import Application from "./Components/Application"
 import './App.css';
 import UserProvider from "./providers/UserProvider"
+import {ThemeProvider} from "./providers/ThemeProvider"
+import Header from './Components/HeaderComponent';
+import Footer from './Components/FooterComponent';
 
 function App() {
   return (
-    <UserProvider>
-      <Application />
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <Header />
+        <Application />
+        <Footer />
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 
