@@ -4,6 +4,7 @@ import { auth } from "../firebase";
 import { UserContext } from '../providers/UserProvider'
 
 const PasswordReset = () => {
+  const user = useContext(UserContext)
   const [email, setEmail] = useState("");
   const [emailHasBeenSent, setEmailHasBeenSent] = useState(false);
   const [error, setError] = useState(null);
@@ -63,12 +64,23 @@ const PasswordReset = () => {
             Send me a reset link
           </button>
         </form>
-        <Link
-         to ="/"
+        {
+          user ? 
+          <Link
+         to ="/profilepage"
           className="my-2 text-blue-700 hover:text-blue-800 text-center block"
         >
-          &larr; back to sign in page
+          &larr; back to My Profile page
         </Link>
+        :
+        <Link
+        to ="/"
+         className="my-2 text-blue-700 hover:text-blue-800 text-center block"
+       >
+         &larr; back to sign in page
+       </Link>
+        }
+        
       </div>
     </div>
   );

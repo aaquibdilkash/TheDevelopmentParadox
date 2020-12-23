@@ -41,3 +41,26 @@ body {
   background-color: rgb(207, 240, 204);
   margin-bottom: 0px;
 }
+
+.center{
+  align-items: center;
+
+}
+
+.footer{
+  width: 100%;
+  /* position: fixed; */
+  bottom: 0;
+  margin-top: auto
+  
+  }
+
+.header{
+  width: 100%;
+  /* position: fixed; */
+  top: 0;
+  margin-bottom: auto
+  
+  }
+
+  

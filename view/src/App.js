@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import Application from "./Components/Application"
 import './App.css';
 import UserProvider from "./providers/UserProvider"

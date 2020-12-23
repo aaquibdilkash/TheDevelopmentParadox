@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { UserContext } from "../providers/UserProvider"
 import {auth} from "../firebase"
+import { Link } from "@reach/router";
+
 
 const ProfilePage = () => {
   const user = useContext(UserContext)
@@ -15,8 +17,8 @@ const ProfilePage = () => {
             background:
                 `url(${photoURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
             backgroundSize: "cover",
-            height: "200px",
-            width: "200px"
+            height: "50px",
+            width: "50px"
           }}
           className="border border-blue-300"
         ></div>
@@ -25,7 +27,10 @@ const ProfilePage = () => {
         <h3 className = "italic">{email}</h3>
         </div>
       </div>
-      <button className = "w-full py-3 bg-red-600 mt-4 text-white" onClick = {() => {auth.signOut()}}>Sign out</button>
+      <button className = "w-full py-3 bg-red-600 mt-4 text-white hover:text-blue-600" onClick = {() => {auth.signOut()}}>Sign out</button>
+      <button className = "w-full py-3 bg-green-600 mt-4 text-white"><Link to="/passwordreset" className="text-white-500 hover:text-blue-600">
+            Change Password ?
+          </Link></button>
     </div>
   ) 
 };
