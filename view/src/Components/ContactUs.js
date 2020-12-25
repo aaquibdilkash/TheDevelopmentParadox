@@ -1,40 +1,104 @@
-import React, {Component} from "react"
+import React, {useContext, useState} from "react"
+import { generateFeedbackDocument } from "../generateFeedbackDocument"
+import { UserContext } from "../providers/UserProvider"
 
-class ContactUs extends Component {
 
-    render() {
+const ContactUs = () => {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+    const [error, setError] = useState(null)
+    const [successMessage, setSuccessMessage] = useState(null)
+    
+
+    const createFeedbackHandler = async (event, name, email, message) => {
+        event.preventDefault()
+
+        try {
+            generateFeedbackDocument(name, email, message)
+            setSuccessMessage("Your Concern has been submitted successfully...We'll get back to you soon...Have a nice day :)")
+        } catch(error) {
+            setError("Error Submiting Feedback!")
+        }
+        setName("")
+        setEmail("")
+        setMessage("")
+    }
+
+
+    const onChangeHandler = event => {
+        const {name, value} = event.currentTarget;
+
+        if (name === "userEmail") {
+            setEmail(value)
+        } else if ( name === "userName") {
+            setName(value)
+        } else if (name === "userMessage") {
+            setMessage(value)
+        }
+    }
         return (
             <section class="text-gray-700 body-font relative">
-                <div class="container px-5 py-24 mx-auto">
+                <div class="container px-5 py-auto mx-auto">
                     <div class="flex flex-col text-center w-full mb-12">
                     <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Contact Us</h1>
-                    <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p>
+                    {error !== null && (
+          <div className="py-4 bg-red-600 w-full text-white text-center mb-3">
+            {error}
+          </div>
+        )}
+                    {successMessage !== null && (
+          <div className="py-4 bg-green-600 w-full text-white text-center mb-3">
+            {successMessage}
+          </div>
+        )}
+                    <p class="lg:w-2/3 mx-auto leading-relaxed text-base">We appreciate you writing to us...Please leave any query suggestion or feedback...</p>
                     </div>
                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">
                         <div class="p-2 w-1/2">
                         <div class="relative">
                             <label for="name" class="leading-7 text-sm text-gray-600">Name</label>
-                            <input type="text" id="name" name="name" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                            <input type="text" id="name" name="name" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            placeholder="Your Name" 
+                            name="userName"
+                            value={name}
+                            onChange={event => onChangeHandler(event)}
+                            />
                         </div>
                         </div>
                         <div class="p-2 w-1/2">
                         <div class="relative">
                             <label for="email" class="leading-7 text-sm text-gray-600">Email</label>
-                            <input type="email" id="email" name="email" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
+                            <input type="email" id="email" name="email" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                            placeholder="Your Email"
+                            name="userEmail" 
+                            value={email}
+                            onChange={event => onChangeHandler(event)}
+                            />
                         </div>
                         </div>
                         <div class="p-2 w-full">
                         <div class="relative">
                             <label for="message" class="leading-7 text-sm text-gray-600">Message</label>
-                            <textarea id="message" name="message" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                            <textarea id="message" name="message" class="w-full bg-gray-100 rounded border border-gray-300 focus:border-indigo-500 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                            placeholder="Your query, suggestion or feedback"
+                            name="userMessage"
+                            value={message}
+                            onChange={event => onChangeHandler(event)}
+
+                            ></textarea>
                         </div>
                         </div>
                         <div class="p-2 w-full">
-                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                        onClick={ event => {
+                            createFeedbackHandler(event, name, email, message)
+                        }}
+                        >Submit</button>
                         </div>
                         <div class="p-2 w-full pt-8 mt-8 border-t border-gray-200 text-center">
-                        <a class="text-indigo-500">example@email.com</a>
+                        <a class="text-indigo-500">professorparadox@gmail.com</a>
                         <p class="leading-normal my-5">49 Smith St.
                             <br />Saint Cloud, MN 56301
                         </p>
@@ -68,7 +132,7 @@ class ContactUs extends Component {
 </section>
         )
     }
-}
+
 
 
 export default ContactUs

@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
 import { UserContext } from "../providers/UserProvider"
 import {auth} from "../firebase"
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 
 
 const ProfilePage = () => {
   const user = useContext(UserContext)
   const {photoURL, displayName, email} = user
   console.log(user)
+
+  const signOutHandler = () => {
+    auth.signOut();
+    navigate('/')
+  }
 
   return (
     <div className = "mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
@@ -27,7 +32,7 @@ const ProfilePage = () => {
         <h3 className = "italic">{email}</h3>
         </div>
       </div>
-      <button className = "w-full py-3 bg-red-600 mt-4 text-white hover:text-blue-600" onClick = {() => {auth.signOut()}}>Sign out</button>
+      <button className = "w-full py-3 bg-red-600 mt-4 text-white hover:text-blue-600" onClick = {() => signOutHandler()}>Sign out</button>
       <button className = "w-full py-3 bg-green-600 mt-4 text-white"><Link to="/passwordreset" className="text-white-500 hover:text-blue-600">
             Change Password ?
           </Link></button>

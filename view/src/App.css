@@ -82,13 +82,13 @@
   }
   
   body {
-    --top-spacing: 150px;
+    --top-spacing: 250px;
     scroll-padding-top: var(--top-spacing);
     
     margin: var(--top-spacing) auto;
     
     max-width: 100%;
-    padding: 0 20px;
+    padding: 0 0;
     font: 18px/1.4 system-ui;
     background-color: rgb(207, 240, 204);
 
