@@ -1,9 +1,11 @@
+import { navigate } from "@reach/router"
 import React, {useContext, useState} from "react"
-import { generateFeedbackDocument } from "../generateFeedbackDocument"
+import { firestore } from "../firebase"
 import { UserContext } from "../providers/UserProvider"
 
 
 const ContactUs = () => {
+    const user = useContext(UserContext)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
@@ -13,12 +15,38 @@ const ContactUs = () => {
 
     const createFeedbackHandler = async (event, name, email, message) => {
         event.preventDefault()
-
-        try {
-            generateFeedbackDocument(name, email, message)
-            setSuccessMessage("Your Concern has been submitted successfully...We'll get back to you soon...Have a nice day :)")
-        } catch(error) {
-            setError("Error Submiting Feedback!")
+        if(!user) {
+            setError("Please Sign In first before submitting feedback!")
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, 4000)
+            }).then(()=> {
+                navigate('/signin')
+            })
+        }
+        if(name===''||email===''||message==='') {
+            setError("Please fill the given fields!")
+            setTimeout(()=> {
+                setError(null)
+            }, 3000)
+        } else {                    
+            firestore.collection(`feedback`)
+                .add({
+                    name: name,
+                    email: email,
+                    message: message,
+                    time : new Date()
+                }).then(() => {
+                        setSuccessMessage("Your Concern has been submitted successfully...We'll get back to you soon...Have a nice day :)")
+                        setTimeout(()=> {
+                            setSuccessMessage(null)
+                        }, 5000)
+                    })
+                    .catch(error => {
+                            setError("Error Submiting Feedback!")
+                            setTimeout(()=> {
+                                setError(null)
+                            }, 3000)
+                    }) 
         }
         setName("")
         setEmail("")
@@ -29,6 +57,7 @@ const ContactUs = () => {
     const onChangeHandler = event => {
         const {name, value} = event.currentTarget;
 
+        
         if (name === "userEmail") {
             setEmail(value)
         } else if ( name === "userName") {
@@ -42,17 +71,19 @@ const ContactUs = () => {
                 <div class="container px-5 py-auto mx-auto">
                     <div class="flex flex-col text-center w-full mb-12">
                     <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Contact Us</h1>
+        <div className="py-0 w-full text-black text-center mb-3">
+        We appreciate you writing to us...Please leave any query suggestion or feedback...
+          </div>
                     {error !== null && (
           <div className="py-4 bg-red-600 w-full text-white text-center mb-3">
             {error}
           </div>
         )}
-                    {successMessage !== null && (
+        {successMessage !== null && (
           <div className="py-4 bg-green-600 w-full text-white text-center mb-3">
             {successMessage}
           </div>
         )}
-                    <p class="lg:w-2/3 mx-auto leading-relaxed text-base">We appreciate you writing to us...Please leave any query suggestion or feedback...</p>
                     </div>
                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                     <div class="flex flex-wrap -m-2">

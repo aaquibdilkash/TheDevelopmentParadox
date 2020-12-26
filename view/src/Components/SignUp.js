@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import { auth, generateUserDocument, signInWithGoogle } from "../firebase";
 
 const SignUp = () => {
@@ -13,11 +13,11 @@ const SignUp = () => {
 
     try{
       const {user} = await auth.createUserWithEmailAndPassword(email, password)
-      generateUserDocument(user, {displayName})
+      await generateUserDocument(user, {displayName})
+      navigate("/profilepage")
     }
     catch(error) {
       setError("Error Signing up with Email and Password!")
-      console.log(error)
     }
     setEmail("");
     setPassword("");
@@ -98,7 +98,7 @@ const SignUp = () => {
         </button>
         <p className="text-center my-3">
           Already have an account?{" "}
-          <Link to="/" className="text-blue-500 hover:text-blue-600">
+          <Link to="/signin" className="text-blue-500 hover:text-blue-600">
             Sign in here
           </Link>
         </p>

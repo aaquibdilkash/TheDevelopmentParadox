@@ -1,3 +1,4 @@
+import { navigate } from "@reach/router"
 import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore"
@@ -10,8 +11,9 @@ export const firestore = firebase.firestore()
 
 const provider = new firebase.auth.GoogleAuthProvider()
 
-export const signInWithGoogle = () => {
-  auth.signInWithPopup(provider)
+export const signInWithGoogle = async () => {
+  await auth.signInWithPopup(provider)
+  navigate('/profilepage')
 }
 
 export const generateUserDocument = async (user, additionalData) => {
@@ -27,6 +29,7 @@ export const generateUserDocument = async (user, additionalData) => {
         displayName,
         email,
         photoURL,
+        time: new Date(),
         ...additionalData
       })
     } catch (error) {

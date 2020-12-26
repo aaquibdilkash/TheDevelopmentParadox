@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import { auth, signInWithGoogle } from "../firebase";
 
 const SignIn = () => {
@@ -7,12 +7,15 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const signInWithEmailAndPasswordHandler =
-    (event, email, password) => {
+    async (event, email, password) => {
       event.preventDefault();
-      auth.signInWithEmailAndPassword(email, password).catch(error => {
-        setError("Error signing in with Email and Password!")
-        console.log(error)
-      })
+      try{
+        await auth.signInWithEmailAndPassword(email, password)
+        navigate("/profilepage")
+      }
+      catch(error) {
+        setError("Error Signing up with Email and Password!")
+      }
     };
 
   const onChangeHandler = (event) => {
@@ -68,11 +71,11 @@ const SignIn = () => {
         </button>
         <p className="text-center my-3">
           Don't have an account?{" "}
-          <Link to="signup" className="text-blue-500 hover:text-blue-600">
+          <Link to="/signup" className="text-blue-500 hover:text-blue-600">
             Sign up here
           </Link>{" "}
           <br />{" "}
-          <Link to="passwordreset" className="text-blue-500 hover:text-blue-600">
+          <Link to="/passwordreset" className="text-blue-500 hover:text-blue-600">
             Forgot Password?
           </Link>
         </p>
